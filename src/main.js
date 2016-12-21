@@ -2,6 +2,7 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './App'
+import 'bootstrap-loader'
 
 /* eslint-disable no-new */
 new Vue({
@@ -9,3 +10,4 @@ new Vue({
   template: '<App/>',
   components: { App }
 })
+
