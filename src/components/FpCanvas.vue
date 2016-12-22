@@ -33,6 +33,9 @@ export default {
 </script>
 
 <style>
+#fp-canvas-col{
+  padding: 0;
+}
 #main-canvas {
   width: 100%;
   height: 100%;
