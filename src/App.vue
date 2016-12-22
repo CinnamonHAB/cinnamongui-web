@@ -1,32 +1,25 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <div class='row'>
-      <div class='col-xs-offset-3'>
-        <p>Hello</p>
-      </div>
-    </div>
+    <ch-navbar></ch-navbar>
+    <ch-main></ch-main>
   </div>
 </template>
 
 <script>
-// import Hello from './components/Hello'
+import ChNavbar from './components/ChNavbar'
+import ChMain from './components/ChMain'
 
 export default {
   name: 'app',
   components: {
-    // Hello
+    ChNavbar,
+    ChMain
   }
 }
 </script>
 
 <style>
-/*#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}*/
+#app {
+  height: 100vh;
+}
 </style>
