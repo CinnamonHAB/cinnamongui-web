@@ -2,6 +2,19 @@
 
 > CinnamonHAB WEB UI
 
+## Development
+
+Run
+
+```
+docker-compose run   -p 8080:8080 web /bin/bash
+npm install
+npm run dev
+```
+
+Visit [localhost:8080](http://localhost:8080)
+
+
 ## Build Setup
 
 ``` bash
