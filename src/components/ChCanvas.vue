@@ -1,20 +1,35 @@
 <template>
-  <div class='col-xs-8 full-height' style='background-color:#c0c0c0'>
+  <div class='col-xs-8 full-height' id='ch-canvas-col' style='background-color:#c0c0c0'>
     <canvas id='main-canvas'></canvas>
   </div>
 </template>
-<!--
 <script>
-// var rect = new fabric.Rect({
-//   left: 100,
-//   top: 100,
-//   fill: 'red',
-//   width: 20,
-//   height: 20
-// });
-// canvas.add(rect);
+var fabric = window.fabric
+export default {
+  created: function () {
+    console.log("I'm created")
+  },
+  mounted: function () {
+    console.log("I'm mounted")
+    var $ = window.$
+    var canvas = new fabric.Canvas('main-canvas')
+    canvas.setWidth($('#ch-canvas-col').width())
+    canvas.setHeight($('#ch-canvas-col').height())
+    var rect = new fabric.Rect({
+      left: 100,
+      top: 100,
+      fill: 'red',
+      width: 20,
+      height: 20
+    })
+    canvas.add(rect)
+  },
+  data: function () {
+    console.log("I'm data")
+    return {}
+  }
+}
 </script>
--->
 
 <style>
 #main-canvas {
