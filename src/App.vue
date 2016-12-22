@@ -1,19 +1,19 @@
 <template>
   <div id="app">
-    <ch-navbar></ch-navbar>
-    <ch-main></ch-main>
+    <navbar></navbar>
+    <editor></editor>
   </div>
 </template>
 
 <script>
-import ChNavbar from './components/ChNavbar'
-import ChMain from './components/ChMain'
+import Navbar from './components/Navbar'
+import Editor from './components/Editor'
 
 export default {
   name: 'app',
   components: {
-    ChNavbar,
-    ChMain
+    Navbar,
+    Editor
   }
 }
 </script>

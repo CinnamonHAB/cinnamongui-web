@@ -1,5 +1,6 @@
+<!-- FloorPlan Canvas component -->
 <template>
-  <div class='col-xs-8 full-height' id='ch-canvas-col' style='background-color:#c0c0c0'>
+  <div class='col-xs-8 full-height' id='fp-canvas-col' style='background-color:#c0c0c0'>
     <canvas id='main-canvas'></canvas>
   </div>
 </template>
@@ -13,8 +14,8 @@ export default {
     console.log("I'm mounted")
     var $ = window.$
     var canvas = new fabric.Canvas('main-canvas')
-    canvas.setWidth($('#ch-canvas-col').width())
-    canvas.setHeight($('#ch-canvas-col').height())
+    canvas.setWidth($('#fp-canvas-col').width())
+    canvas.setHeight($('#fp-canvas-col').height())
     var rect = new fabric.Rect({
       left: 100,
       top: 100,
