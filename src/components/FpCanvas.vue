@@ -11,7 +11,6 @@ export default {
     console.log("I'm created")
   },
   mounted: function () {
-    console.log("I'm mounted")
     var $ = window.$
     var canvas = new fabric.Canvas('main-canvas')
     canvas.setWidth($('#fp-canvas-col').width())
