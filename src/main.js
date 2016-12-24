@@ -10,7 +10,7 @@ import 'bootstrap-loader'
 
 Vue.use(Vuex)
 
-import store from './Store'
+import store from './store/Store'
 
 /* eslint-disable no-new */
 new Vue({
