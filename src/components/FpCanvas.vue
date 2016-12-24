@@ -23,6 +23,16 @@ export default {
       height: 20
     })
     canvas.add(rect)
+    canvas.on('object:moving', function (e) {
+      var currentCanvasHeight = canvas.height
+      var currentCanvasWidth = canvas.width
+      if ((e.target.left + e.target.getWidth()) > (currentCanvasWidth * 0.9)) {
+        canvas.setWidth(currentCanvasWidth + 50)
+      }
+      if ((e.target.top + e.target.getHeight()) > (currentCanvasHeight * 0.9)) {
+        canvas.setHeight(currentCanvasHeight + 50)
+      }
+    })
   },
   data: function () {
     console.log("I'm data")
@@ -34,9 +44,10 @@ export default {
 <style>
 #fp-canvas-col{
   padding: 0;
+  overflow: scroll;
 }
-#main-canvas {
-  width: 100%;
+#main-canvas{
   height: 100%;
+  width: 100%;
 }
 </style>
