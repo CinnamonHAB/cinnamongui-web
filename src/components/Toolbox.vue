@@ -10,10 +10,21 @@
 </template>
 
 <script>
+import { addObject } from '../store/actions'
+
 export default {
   methods: {
     addSensor: function () {
-      window.alert('magic')
+      var vm = this
+
+      addObject(vm.$store, {
+        type: 'rect',
+        left: 200,
+        top: 200,
+        width: 50,
+        height: 50,
+        fill: 'blue'
+      })
     }
   }
 }

@@ -4,7 +4,10 @@
     <canvas id='main-canvas'></canvas>
   </div>
 </template>
+
 <script>
+import { mapGetters } from 'vuex'
+
 var fabric = window.fabric
 export default {
   created: function () {
@@ -12,7 +15,10 @@ export default {
   },
   mounted: function () {
     var $ = window.$
+    var vm = this
+
     var canvas = new fabric.Canvas('main-canvas')
+    vm.canvas = canvas
     canvas.setWidth($('#fp-canvas-col').width())
     canvas.setHeight($('#fp-canvas-col').height())
     var rect = new fabric.Rect({
@@ -36,7 +42,22 @@ export default {
   },
   data: function () {
     console.log("I'm data")
-    return {}
+    return {
+      canvas: {}
+    }
+  },
+  computed: {
+    ...mapGetters({
+      lastObject: 'lastObject'
+    })
+  },
+  watch: {
+    'lastObject': function () {
+      var vm = this
+      console.log(this)
+
+      vm.canvas.add(new fabric.Rect(vm.$store.getters.lastObject))
+    }
   }
 }
 </script>
