@@ -48,15 +48,24 @@ export default {
   },
   computed: {
     ...mapGetters({
-      lastObject: 'lastObject'
+      lastObject: 'lastObject',
+      objects: 'objects'
     })
   },
   watch: {
     'lastObject': function () {
       var vm = this
-      console.log(this)
-
-      vm.canvas.add(new fabric.Rect(vm.$store.getters.lastObject))
+      if (vm.$store.getters.lastObject != null) {
+        vm.canvas.add(new fabric.Rect(vm.$store.getters.lastObject))
+      }
+    },
+    objects: function () {
+      var vm = this
+      console.log(vm.$store.getters.objects)
+      if (vm.$store.getters.objects.length === 1) {
+        console.log('clearing')
+        vm.canvas.clear()
+      }
     }
   }
 }

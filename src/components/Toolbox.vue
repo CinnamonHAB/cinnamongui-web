@@ -5,12 +5,15 @@
       <li>
         <button v-on:click='addSensor'>Add a sensor</button>
       </li>
+      <li>
+        <button v-on:click='clearAll'>Remove all objects</button>
+      </li>
     </ul>
   </div>
 </template>
 
 <script>
-import { addObject } from '../store/actions'
+import { addObject, clearAll } from '../store/actions'
 
 export default {
   methods: {
@@ -25,6 +28,10 @@ export default {
         height: 50,
         fill: 'blue'
       })
+    },
+    clearAll: function () {
+      var vm = this
+      clearAll(vm.$store)
     }
   }
 }

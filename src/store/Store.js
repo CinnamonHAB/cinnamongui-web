@@ -12,6 +12,7 @@ const state = {
 }
 
 const getters = {
+  objects: state => state.objects,
   lastObject: state => state.lastObject
 }
 
@@ -20,6 +21,12 @@ const mutations = {
     state.objects.push(object)
     state.activeObject = object
     state.lastObject = object
+  },
+
+  CLEAR_ALL (state) {
+    state.objects.length = 0
+    state.activeObject = null
+    state.lastObject = null
   }
 }
 
