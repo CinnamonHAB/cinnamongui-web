@@ -7,6 +7,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import { updateObject } from '../store/actions'
 
 var fabric = window.fabric
 export default {
@@ -21,14 +22,6 @@ export default {
     vm.canvas = canvas
     canvas.setWidth($('#fp-canvas-col').width())
     canvas.setHeight($('#fp-canvas-col').height())
-    var rect = new fabric.Rect({
-      left: 100,
-      top: 100,
-      fill: 'red',
-      width: 20,
-      height: 20
-    })
-    canvas.add(rect)
     canvas.on('object:moving', function (e) {
       var currentCanvasHeight = canvas.height
       var currentCanvasWidth = canvas.width
@@ -38,6 +31,10 @@ export default {
       if ((e.target.top + e.target.getHeight()) > (currentCanvasHeight * 0.9)) {
         canvas.setHeight(currentCanvasHeight + 50)
       }
+    })
+
+    canvas.on('object:modified', function (e) {
+      updateObject(vm.$store, e.target.toObject(['id']))
     })
   },
   data: function () {
@@ -55,16 +52,19 @@ export default {
   watch: {
     'lastObject': function () {
       var vm = this
-      if (vm.$store.getters.lastObject != null) {
-        vm.canvas.add(new fabric.Rect(vm.$store.getters.lastObject))
-      }
-    },
-    objects: function () {
+      var obj = (new fabric.Rect(vm.lastObject)).toObject(['id'])
+      updateObject(vm.$store, obj)
+      vm.redraw()
+    }
+  },
+  methods: {
+    redraw: function () {
       var vm = this
-      console.log(vm.$store.getters.objects)
-      if (vm.$store.getters.objects.length === 1) {
-        console.log('clearing')
-        vm.canvas.clear()
+      vm.canvas.clear()
+
+      for (var i in vm.$store.getters.objects) {
+        var obj = vm.$store.getters.objects[i]
+        vm.canvas.add(new fabric.Rect(obj))
       }
     }
   }

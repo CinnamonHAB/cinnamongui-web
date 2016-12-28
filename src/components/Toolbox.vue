@@ -15,12 +15,15 @@
 <script>
 import { addObject, clearAll } from '../store/actions'
 
+var counter = 1
+
 export default {
   methods: {
     addSensor: function () {
       var vm = this
 
       addObject(vm.$store, {
+        id: counter,
         type: 'rect',
         left: 200,
         top: 200,
@@ -28,6 +31,8 @@ export default {
         height: 50,
         fill: 'blue'
       })
+
+      counter++
     },
     clearAll: function () {
       var vm = this

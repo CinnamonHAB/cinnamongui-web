@@ -6,7 +6,7 @@ import * as actions from './actions.js'
 Vue.use(Vuex)
 
 const state = {
-  objects: [],
+  objects: {},
   activeObject: {},
   lastObject: {}
 }
@@ -16,15 +16,28 @@ const getters = {
   lastObject: state => state.lastObject
 }
 
+var counter = 1
+
 const mutations = {
   ADD_OBJECT (state, object) {
-    state.objects.push(object)
+    if (object.id == null) {
+      do {
+        object.id = counter
+        counter++
+      } while (state.objects[object.id] != null)
+    }
+
+    state.objects[object.id] = object
     state.activeObject = object
     state.lastObject = object
   },
 
+  UPDATE_OBJECT (state, object) {
+    state.objects[object.id] = object
+  },
+
   CLEAR_ALL (state) {
-    state.objects.length = 0
+    state.objects = {}
     state.activeObject = null
     state.lastObject = null
   }
