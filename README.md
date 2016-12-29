@@ -14,6 +14,8 @@ npm run dev
 
 Visit [localhost:8080](http://localhost:8080)
 
+*Important*: Be sure to also run [cinnamongui-api](https://github.com/CinnamonHAB/cinnamongui-api) at `http://localhost:3000`
+
 
 ## Build Setup
 
