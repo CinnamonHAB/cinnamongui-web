@@ -8,12 +8,14 @@ Vue.use(Vuex)
 const state = {
   objects: {},
   activeObject: {},
-  lastObject: {}
+  lastObject: {},
+  lastUpdatedObject: {}
 }
 
 const getters = {
   objects: state => state.objects,
-  lastObject: state => state.lastObject
+  lastObject: state => state.lastObject,
+  lastUpdatedObject: state => state.lastUpdatedObject
 }
 
 var counter = 1
@@ -34,6 +36,7 @@ const mutations = {
 
   UPDATE_OBJECT (state, object) {
     state.objects[object.id] = object
+    state.lastUpdatedObject = object
   },
 
   CLEAR_ALL (state) {

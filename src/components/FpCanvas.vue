@@ -7,7 +7,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { updateObject } from '../store/actions'
+import { addObject, updateObject } from '../store/actions'
 
 var fabric = window.fabric
 export default {
@@ -36,6 +36,19 @@ export default {
     canvas.on('object:modified', function (e) {
       updateObject(vm.$store, e.target.toObject(['id']))
     })
+
+    vm.$http.get('http://localhost:3000/floorplan_objects').then((response) => {
+      console.log(response)
+      for (var i in response.data) {
+        console.log(i)
+        var obj = response.data[i]
+        console.log('Adding object')
+        console.log(obj)
+        addObject(vm.$store, obj)
+      }
+    }, (reject) => {
+      console.log(reject)
+    })
   },
   data: function () {
     console.log("I'm data")
@@ -46,15 +59,21 @@ export default {
   computed: {
     ...mapGetters({
       lastObject: 'lastObject',
+      lastUpdatedObject: 'lastUpdatedObject',
       objects: 'objects'
     })
   },
   watch: {
-    'lastObject': function () {
+    'lastObject': function (lastObject) {
       var vm = this
-      var obj = (new fabric.Rect(vm.lastObject)).toObject(['id'])
+      var obj = (new fabric.Rect(lastObject)).toObject(['id'])
       updateObject(vm.$store, obj)
       vm.redraw()
+    },
+    lastUpdatedObject: function (obj) {
+      // console.log('updated')
+      // console.log(obj)
+      // console.log(obj.toString())
     }
   },
   methods: {

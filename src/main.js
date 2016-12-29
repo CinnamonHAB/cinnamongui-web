@@ -5,9 +5,12 @@ import 'fabric'
 
 import Vue from 'vue'
 import Vuex from 'vuex'
+import VueResource from 'vue-resource'
+
 import App from './App'
 import 'bootstrap-loader'
 
+Vue.use(VueResource)
 Vue.use(Vuex)
 
 import store from './store/Store'
