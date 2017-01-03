@@ -9,13 +9,19 @@ const state = {
   objects: {},
   activeObject: {},
   lastObject: {},
-  lastUpdatedObject: {}
+  lastUpdatedObject: {},
+
+  devices: {},
+  floorplan: {}
 }
 
 const getters = {
   objects: state => state.objects,
   lastObject: state => state.lastObject,
-  lastUpdatedObject: state => state.lastUpdatedObject
+  lastUpdatedObject: state => state.lastUpdatedObject,
+
+  devices: state => state.devices,
+  floorplan: state => state.floorplan
 }
 
 var counter = 1
@@ -43,6 +49,10 @@ const mutations = {
     state.objects = {}
     state.activeObject = null
     state.lastObject = null
+  },
+
+  SET_FLOORPLAN (state, floorplan) {
+    state.floorplan = floorplan
   }
 }
 

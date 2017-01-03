@@ -14,9 +14,7 @@
 </template>
 
 <script>
-import { addObject, clearAll } from '../store/actions'
-
-let apiBase = 'http://localhost:3000'
+import { addObject, clearAll, fetchFloorplan } from '../store/actions'
 
 var counter = 1
 
@@ -64,23 +62,11 @@ export default {
   mounted: function () {
     var vm = this
     console.log('Loading floorplan')
-    vm.$http.get(apiBase + '/floorplans').then((response) => {
-      if (response.body.length === 0) {
-        return Promise.reject('No floorplans')
-      }
-
-      var floorplan = response.body[0]
-      console.log('Floorplan: ')
-      console.log(floorplan)
-
-      console.log('Loading floorplan (' + floorplan.id + ')')
-
-      return vm.$http.get(apiBase + '/floorplans/' + floorplan.id)
-    })
+    fetchFloorplan(vm, vm.$store)
     .then((fpDetails) => {
       console.log('Floorplan details:')
       console.log(fpDetails)
-      vm.domain = fpDetails.body.domain
+      vm.domain = fpDetails.domain
     }, (e) => {
       console.log('Error')
       console.log(e)

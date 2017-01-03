@@ -7,7 +7,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { addObject, updateObject } from '../store/actions'
+// import { updateObject } from '../store/actions'
 
 var fabric = window.fabric
 export default {
@@ -34,21 +34,25 @@ export default {
     })
 
     canvas.on('object:modified', function (e) {
-      updateObject(vm.$store, e.target.toObject(['id']))
+      // updateObject(vm.$store, e.target.toObject(['id']))
     })
 
-    vm.$http.get('http://localhost:3000/floorplan_objects').then((response) => {
-      console.log(response)
-      for (var i in response.data) {
-        console.log(i)
-        var obj = response.data[i]
-        console.log('Adding object')
-        console.log(obj)
-        addObject(vm.$store, obj)
-      }
-    }, (reject) => {
-      console.log(reject)
-    })
+    // vm.$http.get('http://localhost:3000/floorplan_objects').then((response) => {
+    //   console.log(response)
+    //   for (var i in response.data) {
+    //     console.log(i)
+    //     var obj = response.data[i]
+    //     console.log('Adding object')
+    //     console.log(obj)
+    //     addObject(vm.$store, obj)
+    //   }
+    // }, (reject) => {
+    //   console.log(reject)
+    // })
+
+    // setTimeout(() => {
+    //   vm.redraw()
+    // }, 2000)
   },
   data: function () {
     console.log("I'm data")
@@ -60,20 +64,26 @@ export default {
     ...mapGetters({
       lastObject: 'lastObject',
       lastUpdatedObject: 'lastUpdatedObject',
-      objects: 'objects'
+      objects: 'objects',
+      floorplan: 'floorplan'
     })
   },
   watch: {
     'lastObject': function (lastObject) {
       var vm = this
-      var obj = (new fabric.Rect(lastObject)).toObject(['id'])
-      updateObject(vm.$store, obj)
+      // var obj = (new fabric.Rect(lastObject)).toObject(['id'])
+      // updateObject(vm.$store, obj)
       vm.redraw()
     },
     lastUpdatedObject: function (obj) {
       // console.log('updated')
       // console.log(obj)
       // console.log(obj.toString())
+    },
+    'floorplan.problem.device_definitions': function () {
+      var vm = this
+      console.log('Device definitions changed. Redrawing...')
+      vm.redraw()
     }
   },
   methods: {
@@ -81,8 +91,9 @@ export default {
       var vm = this
       vm.canvas.clear()
 
-      for (var i in vm.$store.getters.objects) {
-        var obj = vm.$store.getters.objects[i]
+      for (var i in vm.$store.getters.floorplan.problem.device_definitions) {
+        var device = vm.$store.getters.floorplan.problem.device_definitions[i]
+        var obj = device.floorplan_object
         vm.canvas.add(new fabric.Rect(obj))
       }
     }
