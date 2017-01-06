@@ -27,3 +27,20 @@ export const fetchFloorplan = ({$http}, {commit}) => {
     })
   })
 }
+
+export const addDevice = function ({$http, $resource}, {commit, getters}, device) {
+  var floorplan = getters.floorplan
+  console.log('floorplan:')
+  console.log(floorplan)
+  console.log('device')
+  console.log(device)
+
+  console.log($http)
+  console.log($resource)
+  var resource = $resource(API_BASE + '/floorplans/' + floorplan.id + '/problems/_/device_definitions')
+  console.log(resource)
+  resource.save({}, {device_definition: device}).then(function (resp) {
+    console.log('response:')
+    console.log(resp)
+  })
+}

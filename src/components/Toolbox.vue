@@ -14,9 +14,11 @@
 </template>
 
 <script>
-import { addObject, clearAll, fetchFloorplan } from '../store/actions'
+import { clearAll, fetchFloorplan, addDevice } from '../store/actions'
+import { DeviceFactory } from '../services/DeviceFactory'
 
-var counter = 1
+console.log('DeviceFactory:')
+console.log(DeviceFactory)
 
 export default {
   data: function () {
@@ -38,23 +40,12 @@ export default {
   },
   methods: {
     addDevice: function (device) {
+      var vm = this
       console.log('Adding a ' + device.keyword)
       console.log(device)
-    },
-    addSensor: function () {
-      var vm = this
 
-      addObject(vm.$store, {
-        id: counter,
-        type: 'rect',
-        left: 200,
-        top: 200,
-        width: 50,
-        height: 50,
-        fill: 'blue'
-      })
-
-      counter++
+      var deviceDefinition = DeviceFactory.buildDevice(device)
+      addDevice(vm, vm.$store, deviceDefinition)
     },
     clearAll: function () {
       var vm = this
@@ -63,15 +54,15 @@ export default {
   },
   mounted: function () {
     var vm = this
-    console.log('Loading floorplan')
+    // console.log('Loading floorplan')
     fetchFloorplan(vm, vm.$store)
     .then((fpDetails) => {
-      console.log('Floorplan details:')
-      console.log(fpDetails)
+      // console.log('Floorplan details:')
+      // console.log(fpDetails)
       vm.domain = fpDetails.domain
     }, (e) => {
-      console.log('Error')
-      console.log(e)
+      // console.log('Error')
+      // console.log(e)
     })
   }
 }

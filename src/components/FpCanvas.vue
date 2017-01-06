@@ -98,9 +98,11 @@ export default {
         var obj = device.floorplan_object
         var canvasObj
         if (device.predicate.keyword === 'LAMP') {
+          console.log('adding new lamp')
           canvasObj = new Lamp(obj)
         }
         else if (device.predicate.keyword === 'SWITCH') {
+          console.log('adding new switch')
           canvasObj = new Switch(obj)
         }
         else {
@@ -108,6 +110,7 @@ export default {
           continue
         }
 
+        console.log(canvasObj)
         vm.canvas.add(canvasObj)
       }
     }
