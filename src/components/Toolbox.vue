@@ -31,7 +31,9 @@ export default {
 
       console.log(vm.domain.predicates)
 
-      return vm.domain.predicates.filter((pred) => { return pred.predicate_type === 'device' })
+      return vm.domain.predicates.filter((pred) => {
+        return pred.predicate_type === 'device'
+      })
     }
   },
   methods: {
