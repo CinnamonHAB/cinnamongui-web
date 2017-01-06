@@ -8,6 +8,7 @@
 <script>
 import { mapGetters } from 'vuex'
 // import { updateObject } from '../store/actions'
+import { Lamp, Switch } from '../CanvasObject'
 
 var fabric = window.fabric
 export default {
@@ -93,8 +94,21 @@ export default {
 
       for (var i in vm.$store.getters.floorplan.problem.device_definitions) {
         var device = vm.$store.getters.floorplan.problem.device_definitions[i]
+        console.log(device)
         var obj = device.floorplan_object
-        vm.canvas.add(new fabric.Rect(obj))
+        var canvasObj
+        if (device.predicate.keyword === 'LAMP') {
+          canvasObj = new Lamp(obj)
+        }
+        else if (device.predicate.keyword === 'SWITCH') {
+          canvasObj = new Switch(obj)
+        }
+        else {
+          console.error('Unknown device type: ' + obj.type)
+          continue
+        }
+
+        vm.canvas.add(canvasObj)
       }
     }
   }
