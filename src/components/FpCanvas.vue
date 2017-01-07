@@ -7,7 +7,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-// import { updateObject } from '../store/actions'
+import { updateDevice } from '../store/actions'
 import { Lamp, Switch } from '../CanvasObject'
 
 var fabric = window.fabric
@@ -36,24 +36,14 @@ export default {
 
     canvas.on('object:modified', function (e) {
       // updateObject(vm.$store, e.target.toObject(['id']))
+      var canvasObj = e.target.toObject()
+      var deviceDefinition = vm.$store.getters.floorplan.problem.device_definitions.filter(function (dd) {
+        return dd.id === canvasObj.device_definition_id
+      })[0]
+
+      deviceDefinition.floorplan_object = canvasObj
+      updateDevice(vm, vm.$store, deviceDefinition)
     })
-
-    // vm.$http.get('http://localhost:3000/floorplan_objects').then((response) => {
-    //   console.log(response)
-    //   for (var i in response.data) {
-    //     console.log(i)
-    //     var obj = response.data[i]
-    //     console.log('Adding object')
-    //     console.log(obj)
-    //     addObject(vm.$store, obj)
-    //   }
-    // }, (reject) => {
-    //   console.log(reject)
-    // })
-
-    // setTimeout(() => {
-    //   vm.redraw()
-    // }, 2000)
   },
   data: function () {
     console.log("I'm data")
