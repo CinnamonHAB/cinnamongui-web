@@ -8,7 +8,7 @@ var DeviceFactory = {
       top: 100,
       left: 100,
       height: 50,
-      widht: 50
+      width: 50
     }
     var floorplanObject
 
