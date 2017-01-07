@@ -77,6 +77,10 @@ const mutations = {
     }
 
     state.floorplan.problem.device_definitions.splice(elementIndex, 1)
+  },
+
+  REMOVE_ALL_DEVICES (state) {
+    state.floorplan.problem.device_definitions = []
   }
 }
 

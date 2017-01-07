@@ -1,20 +1,20 @@
 <template>
   <div class='col-xs-2 full-height' id="toolbox-col" style="background-color:#a0a0a0">
-    <p>Hello, I'm Toolbox</p>
+    <h3>Toolbox</h3>
     <p>Domain name: {{ domain.name }}</p>
     <ul>
       <li v-for='device in devices'>
         <button v-on:click='addDevice(device)'>Add a {{ device.keyword }}</button>
       </li>
       <li>
-        <button v-on:click='clearAll'>Remove all objects</button>
+        <button v-on:click='deleteAllDevices'>Delete all devices</button>
       </li>
     </ul>
   </div>
 </template>
 
 <script>
-import { clearAll, fetchFloorplan, addDevice } from '../store/actions'
+import { fetchFloorplan, addDevice, deleteAllDevices } from '../store/actions'
 import { DeviceFactory } from '../services/DeviceFactory'
 
 export default {
@@ -44,9 +44,9 @@ export default {
       var deviceDefinition = DeviceFactory.buildDevice(device)
       addDevice(vm, vm.$store, deviceDefinition)
     },
-    clearAll: function () {
+    deleteAllDevices: function () {
       var vm = this
-      clearAll(vm.$store)
+      deleteAllDevices(vm, vm.$store)
     }
   },
   mounted: function () {
