@@ -2,6 +2,7 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 
 import 'fabric'
+window._ = require('lodash')
 
 import Vue from 'vue'
 import Vuex from 'vuex'
