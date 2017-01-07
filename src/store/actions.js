@@ -28,6 +28,18 @@ export const fetchFloorplan = ({$http}, {commit}) => {
   })
 }
 
+export const selectDevice = ({commit, getters}, id) => {
+  var deviceDefinition = getters.floorplan.problem.device_definitions.filter(function (dd) {
+    return dd.id === id
+  })[0]
+
+  commit('SET_SELECTED_DEVICE', deviceDefinition)
+}
+
+export const deselectDevice = ({commit}) => {
+  commit('SET_SELECTED_DEVICE', null)
+}
+
 export const addDevice = function ({ $resource }, {commit, getters}, device) {
   var floorplan = getters.floorplan
 

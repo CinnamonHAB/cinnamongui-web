@@ -7,7 +7,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { updateDevice } from '../store/actions'
+import { updateDevice, selectDevice, deselectDevice } from '../store/actions'
 import { Lamp, Switch } from '../CanvasObject'
 
 var fabric = window.fabric
@@ -43,6 +43,14 @@ export default {
 
       deviceDefinition.floorplan_object = canvasObj
       updateDevice(vm, vm.$store, deviceDefinition)
+    })
+
+    canvas.on('object:selected', function (e) {
+      selectDevice(vm.$store, e.target.device_definition_id)
+    })
+
+    canvas.on('selection:cleared', function (e) {
+      deselectDevice(vm.$store)
     })
   },
   data: function () {

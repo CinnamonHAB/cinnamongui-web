@@ -13,6 +13,7 @@ const state = {
 
   devices: {},
   lastDevice: {},
+  selectedDevice: null,
   floorplan: {}
 }
 
@@ -23,6 +24,7 @@ const getters = {
 
   devices: state => state.devices,
   lastDevice: state => state.lastDevice,
+  selectedDevice: state => state.selectedDevice,
   floorplan: state => state.floorplan
 }
 
@@ -51,6 +53,11 @@ const mutations = {
     state.objects = {}
     state.activeObject = null
     state.lastObject = null
+  },
+
+  SET_SELECTED_DEVICE (state, device) {
+    console.log('setting selected device')
+    state.selectedDevice = device
   },
 
   SET_FLOORPLAN (state, floorplan) {
