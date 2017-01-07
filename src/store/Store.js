@@ -12,6 +12,7 @@ const state = {
   lastUpdatedObject: {},
 
   devices: {},
+  lastDevice: {},
   floorplan: {}
 }
 
@@ -21,6 +22,7 @@ const getters = {
   lastUpdatedObject: state => state.lastUpdatedObject,
 
   devices: state => state.devices,
+  lastDevice: state => state.lastDevice,
   floorplan: state => state.floorplan
 }
 
@@ -53,6 +55,11 @@ const mutations = {
 
   SET_FLOORPLAN (state, floorplan) {
     state.floorplan = floorplan
+  },
+
+  ADD_DEVICE (state, device) {
+    state.floorplan.problem.device_definitions.push(device)
+    state.lastDevice = device
   }
 }
 

@@ -66,7 +66,8 @@ export default {
       lastObject: 'lastObject',
       lastUpdatedObject: 'lastUpdatedObject',
       objects: 'objects',
-      floorplan: 'floorplan'
+      floorplan: 'floorplan',
+      lastDevice: 'lastDevice'
     })
   },
   watch: {
@@ -82,6 +83,11 @@ export default {
       // console.log(obj.toString())
     },
     'floorplan.problem.device_definitions': function () {
+      var vm = this
+      console.log('Device definitions changed. Redrawing...')
+      vm.redraw()
+    },
+    'lastDevice': function () {
       var vm = this
       console.log('Device definitions changed. Redrawing...')
       vm.redraw()
