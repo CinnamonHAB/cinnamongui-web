@@ -37,14 +37,9 @@ var Lamp = fabric.util.createClass(CinnamonBase, {
   type: 'lamp',
 
   initialize: function (element, options) {
-    var that = this
     options || (options = {})
 
-    options.element = './static/bulb.png'
-    fabric.Image.fromURL('./static/bulb.png', function (img) {
-      window.$.extend(that, img)
-    })
-
+    this.setSrc('/static/bulb.png')
     this.callSuper('initialize', options)
   }
 })
@@ -53,14 +48,9 @@ var Switch = fabric.util.createClass(CinnamonBase, {
   type: 'switch',
 
   initialize: function (element, options) {
-    var that = this
     options || (options = {})
 
-    options.element = './static/bulb.png'
-    fabric.Image.fromURL('./static/bulb.png', function (img) {
-      window.$.extend(that, img)
-    })
-
+    this.setSrc('/static/bulb.png')
     this.callSuper('initialize', options)
   }
 })
