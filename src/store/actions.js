@@ -1,4 +1,4 @@
-let API_BASE = 'http://localhost:3000'
+let API_BASE = 'http://cinnamonhab.makkrnic.com:3000'
 
 export const addObject = ({commit}, object) => {
   commit('ADD_OBJECT', object)
