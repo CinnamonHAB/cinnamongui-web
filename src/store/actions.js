@@ -59,3 +59,12 @@ export const updateDevice = function ({ $resource }, {commit, getters}, device) 
     // commit('ADD_DEVICE', dev)
   })
 }
+
+export const deleteDevice = function ({ $resource }, { commit, getters }, device) {
+  var floorplan = getters.floorplan
+
+  var resource = $resource(API_BASE + '/floorplans/' + floorplan.id + '/problems/_/device_definitions{/id}')
+  return resource.remove({id: device.id}).then(function (resp) {
+    commit('REMOVE_DEVICE', device)
+  })
+}

@@ -17,9 +17,6 @@
 import { clearAll, fetchFloorplan, addDevice } from '../store/actions'
 import { DeviceFactory } from '../services/DeviceFactory'
 
-console.log('DeviceFactory:')
-console.log(DeviceFactory)
-
 export default {
   data: function () {
     return {

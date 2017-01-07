@@ -67,6 +67,16 @@ const mutations = {
   ADD_DEVICE (state, device) {
     state.floorplan.problem.device_definitions.push(device)
     state.lastDevice = device
+  },
+
+  REMOVE_DEVICE (state, device) {
+    var elementIndex = state.floorplan.problem.device_definitions.indexOf(device)
+    if (elementIndex < 0) {
+      console.error('device not found in local cache')
+      return
+    }
+
+    state.floorplan.problem.device_definitions.splice(elementIndex, 1)
   }
 }
 

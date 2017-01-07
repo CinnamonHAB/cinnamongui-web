@@ -3,6 +3,12 @@
     <p>Hello, I'm FpPropertiesPane</p>
     <template v-if='selectedDevice'>
       {{ selectedDevice.name }}
+
+      <p>
+        <button class="btn btn-danger" v-on:click='deleteDevice(selectedDevice)'>
+          Delete
+        </button>
+      </p>
     </template>
     <p v-else>
       Please select a device
@@ -12,12 +18,19 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import { deleteDevice } from '../store/actions'
 
 export default {
   computed: {
     ...mapGetters({
       selectedDevice: 'selectedDevice'
     })
+  },
+  methods: {
+    deleteDevice: function (device) {
+      var vm = this
+      deleteDevice(vm, vm.$store, device)
+    }
   }
 }
 
