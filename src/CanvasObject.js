@@ -41,7 +41,7 @@ var Lamp = fabric.util.createClass(CinnamonBase, {
 
     options.element = './static/bulb.png'
 
-    this.callSuper('initialize', element, options)
+    this.callSuper('initialize', options)
   }
 })
 
@@ -53,7 +53,7 @@ var Switch = fabric.util.createClass(CinnamonBase, {
 
     options.element = './static/bulb.png'
 
-    this.callSuper('initialize', element, options)
+    this.callSuper('initialize', options)
   }
 })
 
