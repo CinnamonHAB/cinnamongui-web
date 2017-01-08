@@ -1,38 +1,40 @@
-import { Lamp, Switch, CinnamonBase } from '../CanvasObject'
+import { Lamp, Switch } from '../CanvasObject'
 
 // let fabric = window.fabric
 
 var DeviceFactory = {
-  buildDevice: function (predicate) {
+  buildDevice: function (predicate, callback) {
     var foOptions = {
       top: 100,
       left: 100,
       height: 50,
       width: 50
     }
-    var floorplanObject
+
+    var cb = function (floorplanObject) {
+      var deviceDefinition = {
+        floorplan_object: floorplanObject,
+        name: predicate.keyword.toLowerCase() + '_' + +(new Date()),
+        predicate_id: predicate.id,
+        predicate: predicate
+      }
+
+      callback && callback(deviceDefinition)
+    }
 
     switch (predicate.keyword) {
       case 'LAMP':
-        floorplanObject = new Lamp(foOptions)
+        Lamp.build(cb, foOptions)
         break
 
       case 'SWITCH':
-        floorplanObject = new Switch(foOptions)
+        var fo = window.$.extend({angle: 180}, foOptions)
+        Switch.build(cb, fo)
         break
 
       default:
-        floorplanObject = new CinnamonBase(foOptions)
+        console.error('Invalid keyword: ' + predicate.keyword)
     }
-
-    var deviceDefinition = {
-      floorplan_object: floorplanObject,
-      name: predicate.keyword.toLowerCase() + '_' + +(new Date()),
-      predicate_id: predicate.id,
-      predicate: predicate
-    }
-
-    return deviceDefinition
   }
 }
 export {

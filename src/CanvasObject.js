@@ -1,10 +1,11 @@
 var fabric = window.fabric
 
-var CinnamonBase = fabric.util.createClass(fabric.Rect, {
-  initialize: function (options) {
+var CinnamonBase = fabric.util.createClass(fabric.Image, {
+  initialize: function (element, options) {
     options || (options = {})
 
-    this.callSuper('initialize', options)
+    this.callSuper('initialize', element, options)
+    this.set('lockUniScaling', true)
     this.set('id', options.id || '')
     this.set('device_definition_id', options.device_definition_id || '')
   },
@@ -23,11 +24,16 @@ var Lamp = fabric.util.createClass(CinnamonBase, {
   initialize: function (options) {
     options || (options = {})
 
-    options.fill = 'green'
+    var img = fabric.util.createImage()
+    img.src = '/static/bulb.png'
 
-    this.callSuper('initialize', options)
+    this.callSuper('initialize', img, options)
   }
 })
+Lamp.build = function (callback, options) {
+  var l = new Lamp(options)
+  callback && callback(l)
+}
 
 var Switch = fabric.util.createClass(CinnamonBase, {
   type: 'switch',
@@ -35,11 +41,16 @@ var Switch = fabric.util.createClass(CinnamonBase, {
   initialize: function (options) {
     options || (options = {})
 
-    options.fill = 'red'
+    var img = fabric.util.createImage()
+    img.src = '/static/bulb.png'
 
-    this.callSuper('initialize', options)
+    this.callSuper('initialize', img, options)
   }
 })
+Switch.build = function (callback, options) {
+  var l = new Switch(options)
+  callback && callback(l)
+}
 
 export {
   CinnamonBase,

@@ -41,8 +41,9 @@ export default {
       console.log('Adding a ' + device.keyword)
       console.log(device)
 
-      var deviceDefinition = DeviceFactory.buildDevice(device)
-      addDevice(vm, vm.$store, deviceDefinition)
+      DeviceFactory.buildDevice(device, function (deviceDefinition) {
+        addDevice(vm, vm.$store, deviceDefinition)
+      })
     },
     deleteAllDevices: function () {
       var vm = this
@@ -51,15 +52,10 @@ export default {
   },
   mounted: function () {
     var vm = this
-    // console.log('Loading floorplan')
     fetchFloorplan(vm, vm.$store)
     .then((fpDetails) => {
-      // console.log('Floorplan details:')
-      // console.log(fpDetails)
       vm.domain = fpDetails.domain
     }, (e) => {
-      // console.log('Error')
-      // console.log(e)
     })
   }
 }
