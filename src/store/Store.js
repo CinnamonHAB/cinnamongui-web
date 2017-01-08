@@ -5,68 +5,46 @@ import * as actions from './actions.js'
 
 Vue.use(Vuex)
 
-const state = {
-  objects: {},
-  activeObject: {},
-  lastObject: {},
-  lastUpdatedObject: {},
+var store
 
+const state = {
   devices: {},
   lastDevice: {},
   selectedDevice: null,
-  floorplan: {}
+  floorplan: {},
+
+  opacityFilter: null,
+
+  canvasRedraw: false
 }
 
 const getters = {
-  objects: state => state.objects,
-  lastObject: state => state.lastObject,
-  lastUpdatedObject: state => state.lastUpdatedObject,
-
   devices: state => state.devices,
   lastDevice: state => state.lastDevice,
   selectedDevice: state => state.selectedDevice,
-  floorplan: state => state.floorplan
+  floorplan: state => state.floorplan,
+  domain: state => state.floorplan.domain,
+  opacityFilter: state => state.opacityFilter,
+
+  canvasRedraw: state => state.canvasRedraw
 }
 
-var counter = 1
-
 const mutations = {
-  ADD_OBJECT (state, object) {
-    if (object.id == null) {
-      do {
-        object.id = counter
-        counter++
-      } while (state.objects[object.id] != null)
-    }
-
-    state.objects[object.id] = object
-    state.activeObject = object
-    state.lastObject = object
-  },
-
-  UPDATE_OBJECT (state, object) {
-    state.objects[object.id] = object
-    state.lastUpdatedObject = object
-  },
-
-  CLEAR_ALL (state) {
-    state.objects = {}
-    state.activeObject = null
-    state.lastObject = null
-  },
 
   SET_SELECTED_DEVICE (state, device) {
-    console.log('setting selected device')
     state.selectedDevice = device
+    store.commit('CANVAS_REDRAW')
   },
 
   SET_FLOORPLAN (state, floorplan) {
     state.floorplan = floorplan
+    store.commit('CANVAS_REDRAW')
   },
 
   ADD_DEVICE (state, device) {
     state.floorplan.problem.device_definitions.push(device)
     state.lastDevice = device
+    store.commit('CANVAS_REDRAW')
   },
 
   REMOVE_DEVICE (state, device) {
@@ -77,16 +55,29 @@ const mutations = {
     }
 
     state.floorplan.problem.device_definitions.splice(elementIndex, 1)
+    store.commit('CANVAS_REDRAW')
   },
 
   REMOVE_ALL_DEVICES (state) {
     state.floorplan.problem.device_definitions = []
+    store.commit('CANVAS_REDRAW')
+  },
+
+  SET_OPACITY_FILTER (state, filter) {
+    state.opacityFilter = filter
+    store.commit('CANVAS_REDRAW')
+  },
+
+  CANVAS_REDRAW (state) {
+    state.canvasRedraw = !state.canvasRedraw
   }
 }
 
-export default new Vuex.Store({
+store = new Vuex.Store({
   state,
   mutations,
   actions,
   getters
 })
+
+export default store

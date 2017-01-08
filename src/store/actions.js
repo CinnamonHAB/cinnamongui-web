@@ -1,17 +1,5 @@
 let API_BASE = 'http://localhost:3000'
 
-export const addObject = ({commit}, object) => {
-  commit('ADD_OBJECT', object)
-}
-
-export const updateObject = ({commit}, object) => {
-  commit('UPDATE_OBJECT', object)
-}
-
-export const clearAll = ({commit}) => {
-  commit('CLEAR_ALL')
-}
-
 export const fetchFloorplan = ({$http}, {commit}) => {
   return $http.get(API_BASE + '/floorplans').then((response) => {
     if (response.body.length === 0) {
@@ -76,4 +64,12 @@ export const deleteAllDevices = function ({ $resource }, { commit, getters }) {
   return resource.remove({id: '*'}).then(function (resp) {
     commit('REMOVE_ALL_DEVICES')
   })
+}
+
+export const setOpacityFilter = function ({ commit }, filter) {
+  commit('SET_OPACITY_FILTER', filter)
+}
+
+export const canvasRedraw = function ({ commit }) {
+  commit('CANVAS_REDRAW')
 }

@@ -61,61 +61,80 @@ export default {
   },
   computed: {
     ...mapGetters({
-      lastObject: 'lastObject',
-      lastUpdatedObject: 'lastUpdatedObject',
-      objects: 'objects',
       floorplan: 'floorplan',
-      lastDevice: 'lastDevice'
+      lastDevice: 'lastDevice',
+      opacityFilter: 'opacityFilter',
+      selectedDevice: 'selectedDevice',
+      canvasRedraw: 'canvasRedraw'
     })
   },
   watch: {
-    'lastObject': function (lastObject) {
-      var vm = this
-      // var obj = (new fabric.Rect(lastObject)).toObject(['id'])
-      // updateObject(vm.$store, obj)
-      vm.redraw()
-    },
-    lastUpdatedObject: function (obj) {
-      // console.log('updated')
-      // console.log(obj)
-      // console.log(obj.toString())
-    },
     'floorplan.problem.device_definitions': function () {
-      var vm = this
       console.log('Device definitions changed. Redrawing...')
-      vm.redraw()
     },
     'lastDevice': function () {
-      var vm = this
       console.log('Device definitions changed. Redrawing...')
-      vm.redraw()
+    },
+    'selectedDevice': function () {
+      console.log('selected device changed')
+    },
+    'canvasRedraw': function () {
+      this.redraw()
     }
   },
   methods: {
     redraw: function () {
       var vm = this
-      vm.canvas.clear()
 
-      for (var i in vm.$store.getters.floorplan.problem.device_definitions) {
-        var device = vm.$store.getters.floorplan.problem.device_definitions[i]
-        console.log(device)
-        var obj = device.floorplan_object
-        var canvasObj
-        if (device.predicate.keyword === 'LAMP') {
-          console.log('adding new lamp')
-          canvasObj = new Lamp(obj)
-        }
-        else if (device.predicate.keyword === 'SWITCH') {
-          console.log('adding new switch')
-          canvasObj = new Switch(obj)
-        }
-        else {
-          console.error('Unknown device type: ' + obj.type)
-          continue
+      try {
+        var canvasObjects = vm.canvas.getObjects()
+
+        var deviceDefinitionIds = vm.floorplan.problem.device_definitions.map((dd) => {
+          return dd.id
+        })
+
+        for (var ind = canvasObjects.length - 1; ind >= 0; --ind) {
+          var co = canvasObjects[ind]
+          if (deviceDefinitionIds.indexOf(co.device_definition_id) === -1) {
+            co.remove()
+          }
         }
 
-        console.log(canvasObj)
-        vm.canvas.add(canvasObj)
+        for (var i in vm.$store.getters.floorplan.problem.device_definitions) {
+          var device = vm.$store.getters.floorplan.problem.device_definitions[i]
+
+          var canvasObj = canvasObjects.find(function (co) {
+            return co.device_definition_id === device.id
+          })
+
+          if (canvasObj == null) {
+            var obj = device.floorplan_object
+
+            if (device.predicate.keyword === 'LAMP') {
+              console.log('adding new lamp')
+              canvasObj = new Lamp(obj)
+            }
+            else if (device.predicate.keyword === 'SWITCH') {
+              console.log('adding new switch')
+              canvasObj = new Switch(obj)
+            }
+            else {
+              console.error('Unknown device type: ' + obj.type)
+              continue
+            }
+            vm.canvas.add(canvasObj)
+          }
+
+          if (vm.$store.getters.opacityFilter) {
+            canvasObj.opacity = vm.$store.getters.opacityFilter(device)
+          }
+        }
+
+        vm.canvas.renderAll()
+      }
+      catch (ex) {
+        console.error('Exception')
+        console.error(ex)
       }
     }
   }
