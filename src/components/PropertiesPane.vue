@@ -6,11 +6,14 @@
       <text-input :value='selectedDevice.name' :id="'device-name'" :label="'Name'" :change-callback='updateName'></text-input>
 
       <h4>Link...</h4>
-      <ul>
-        <li v-for='link in links'>
-          {{ link.keyword }}
-        </li>
-      </ul>
+      <div v-for='link in links'>
+        <h5>{{ link.keyword }}</h5>
+        <ul>
+          <li v-for='linkedDevice in possibleLinksFor(link)'>
+            <button class='btn btn-sm btn-primary' v-on:mouseover='mouseOver(linkedDevice)' v-on:mouseout='mouseOut(linkedDevice)'>{{ linkedDevice.name }}</button>
+          </li>
+        </ul>
+      </div>
 
       <p>
         <button class="btn btn-danger" v-on:click='deleteDevice(selectedDevice)'>
@@ -26,7 +29,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { updateDevice, deleteDevice, setOpacityFilter } from '../store/actions'
+import { updateDevice, deleteDevice, setOpacityFilter, canvasRedraw } from '../store/actions'
 import TextInput from './TextInput'
 
 export default {
@@ -36,7 +39,8 @@ export default {
   computed: {
     ...mapGetters({
       selectedDevice: 'selectedDevice',
-      domain: 'domain'
+      domain: 'domain',
+      floorplan: 'floorplan'
     }),
     links: function () {
       var vm = this
@@ -52,11 +56,20 @@ export default {
       return links
     }
   },
+  data: function () {
+    return {
+      highlightedDevice: null
+    }
+  },
   mounted: function () {
     var vm = this
     setOpacityFilter(vm.$store, function (device) {
+      if (device === vm.highlightedDevice) {
+        return 1
+      }
+
       if (vm.selectedDevice && vm.selectedDevice !== device) {
-        return 0.5
+        return 0.3
       }
 
       return 1
@@ -75,6 +88,29 @@ export default {
     deleteDevice: function (device) {
       var vm = this
       deleteDevice(vm, vm.$store, device)
+    },
+    mouseOver: function (device) {
+      this.highlightedDevice = device
+      canvasRedraw(this.$store)
+    },
+    mouseOut: function (device) {
+      this.highlightedDevice = null
+      canvasRedraw(this.$store)
+    },
+    possibleLinksFor: function (link) {
+      var vm = this
+
+      if (link && link.predicate_params && link.predicate_params[1]) {
+        var param = link.predicate_params[1]
+        console.log(vm.floorplan.problem.device_definitions)
+        var pl = vm.floorplan.problem.device_definitions.filter(function (dd) {
+          return dd.predicate && dd.predicate.keyword === param.param_type
+        })
+        console.log('potential links:')
+        console.log(pl)
+        return pl
+      }
+      return []
     }
   }
 }

@@ -84,6 +84,7 @@ export default {
   },
   methods: {
     redraw: function () {
+      console.log('redrawing canvas')
       var vm = this
 
       try {
