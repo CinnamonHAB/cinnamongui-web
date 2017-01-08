@@ -41,6 +41,8 @@ export default {
         return dd.id === canvasObj.device_definition_id
       })[0]
 
+      console.log('canvas obj')
+      console.log(canvasObj)
       deviceDefinition.floorplan_object = canvasObj
       updateDevice(vm, vm.$store, deviceDefinition)
     })
@@ -100,22 +102,24 @@ export default {
         var device = vm.$store.getters.floorplan.problem.device_definitions[i]
         console.log(device)
         var obj = device.floorplan_object
-        var canvasObj
+        var cb = function (canvasObj) {
+          console.log('in callback')
+          console.log(canvasObj)
+          vm.canvas.add(canvasObj)
+        }
+
         if (device.predicate.keyword === 'LAMP') {
           console.log('adding new lamp')
-          canvasObj = new Lamp(obj)
+          Lamp.build(cb, obj)
         }
         else if (device.predicate.keyword === 'SWITCH') {
           console.log('adding new switch')
-          canvasObj = new Switch(obj)
+          Switch.build(cb, obj)
         }
         else {
           console.error('Unknown device type: ' + obj.type)
           continue
         }
-
-        console.log(canvasObj)
-        vm.canvas.add(canvasObj)
       }
     }
   }

@@ -5,6 +5,9 @@ var CinnamonBase = fabric.util.createClass(fabric.Image, {
     options || (options = {})
 
     this.callSuper('initialize', element, options)
+    console.log(arguments)
+    console.log('options:')
+    console.log(options)
     this.set('lockUniScaling', true)
     this.set('id', options.id || '')
     this.set('device_definition_id', options.device_definition_id || '')
@@ -15,23 +18,8 @@ var CinnamonBase = fabric.util.createClass(fabric.Image, {
       id: this.get('id'),
       device_definition_id: this.get('device_definition_id')
     })
-  },
-  fromObject: function (object, callback) {
-    fabric.util.loadImage('./static/bulb.png', function (img) {
-      var oImg = new fabric.CinnamonBase(img)
-      oImg._initConfig(object)
-      oImg._initFilters(object)
-      callback(oImg)
-    })
   }
 })
-
-/* fabric.Image.fromURL('./static/bulb.png', function (oImg) {
-      oImg.set({'left': 0})
-      oImg.set({'top': 0})
-      canvas.add(oImg)
-    })
-*/
 
 var Lamp = fabric.util.createClass(CinnamonBase, {
   type: 'lamp',
@@ -39,10 +27,19 @@ var Lamp = fabric.util.createClass(CinnamonBase, {
   initialize: function (element, options) {
     options || (options = {})
 
-    this.setSrc('/static/bulb.png')
+    // this.setSrc('/static/bulb.png')
     this.callSuper('initialize', options)
   }
 })
+Lamp.build = function (callback, options) {
+  fabric.util.loadImage('/static/bulb.png', function (img) {
+    console.log('image type')
+    console.log(img)
+    var l = new Lamp(img, options)
+    console.log(l)
+    callback(l)
+  }, null, options && options.crossOrigin)
+}
 
 var Switch = fabric.util.createClass(CinnamonBase, {
   type: 'switch',
@@ -50,10 +47,15 @@ var Switch = fabric.util.createClass(CinnamonBase, {
   initialize: function (element, options) {
     options || (options = {})
 
-    this.setSrc('/static/bulb.png')
+    // this.setSrc('/static/bulb.png')
     this.callSuper('initialize', options)
   }
 })
+Switch.build = function (callback, options) {
+  fabric.util.loadImage('/static/bulb.png', function (img) {
+    callback(new Switch(img, options))
+  }, null, options && options.crossOrigin)
+}
 
 export {
   CinnamonBase,

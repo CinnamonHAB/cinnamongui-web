@@ -28,8 +28,6 @@ export default {
       var vm = this
       if (vm.domain == null || vm.domain.predicates == null) return []
 
-      console.log(vm.domain.predicates)
-
       return vm.domain.predicates.filter((pred) => {
         return pred.predicate_type === 'device'
       })
@@ -41,8 +39,9 @@ export default {
       console.log('Adding a ' + device.keyword)
       console.log(device)
 
-      var deviceDefinition = DeviceFactory.buildDevice(device)
-      addDevice(vm, vm.$store, deviceDefinition)
+      DeviceFactory.buildDevice(device, function (deviceDefinition) {
+        addDevice(vm, vm.$store, deviceDefinition)
+      })
     },
     clearAll: function () {
       var vm = this
