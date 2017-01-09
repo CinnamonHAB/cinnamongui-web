@@ -93,6 +93,15 @@ export const fetchLinkDefinitions = ({ $http, $resource }, {commit}) => {
   })
 }
 
+export const addLinkDefinition = ({ $resource }, { commit, getters }, linkDefinition) => {
+  var floorplan = getters.floorplan
+  var resource = $resource(API_BASE + '/floorplans/' + floorplan.id + '/problems/_/link_definitions')
+  return resource.save({}, {link_definition: linkDefinition}).then(function (resp) {
+    let newLinkDefinition = resp.body
+    commit('ADD_LINK_DEFINITION', newLinkDefinition)
+  })
+}
+
 export const deleteLinkDefinition = ({ $resource }, { commit, getters }, linkDefinition) => {
   var floorplan = getters.floorplan
   var resource = $resource(API_BASE + '/floorplans/' + floorplan.id + '/problems/_/link_definitions{/id}')

@@ -31,7 +31,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { updateDevice, deleteDevice, setOpacityFilter, canvasRedraw, fetchLinkDefinitions, deleteLinkDefinition } from '../store/actions'
+import { updateDevice, deleteDevice, setOpacityFilter, canvasRedraw, fetchLinkDefinitions, addLinkDefinition, deleteLinkDefinition } from '../store/actions'
 import TextInput from './TextInput'
 
 export default {
@@ -108,12 +108,9 @@ export default {
 
       if (link && link.predicate_params && link.predicate_params[1]) {
         var param = link.predicate_params[1]
-        console.log(vm.floorplan.problem.device_definitions)
         var pl = vm.floorplan.problem.device_definitions.filter(function (dd) {
           return dd.predicate && dd.predicate.keyword === param.param_type
         })
-        console.log('potential links:')
-        console.log(pl)
         return pl
       }
       return []
@@ -125,6 +122,19 @@ export default {
         deleteLinkDefinition(vm, vm.$store, ld)
       }
       else {
+        ld = {}
+        ld.predicate_id = plink.id
+        var params = []
+        params.push({
+          device_definition_id: vm.selectedDevice.id,
+          predicate_param_id: plink.predicate_params[0].id
+        })
+        params.push({
+          device_definition_id: device.id,
+          predicate_param_id: plink.predicate_params[1].id
+        })
+        ld.link_definition_params = params
+        addLinkDefinition(vm, vm.$store, ld)
       }
     },
     getLinkDefinition: function (plink, device) {

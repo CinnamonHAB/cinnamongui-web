@@ -78,6 +78,10 @@ const mutations = {
     state.linkDefinitions = linkDefinitions
   },
 
+  ADD_LINK_DEFINITION (state, linkDefinition) {
+    state.linkDefinitions.push(linkDefinition)
+  },
+
   REMOVE_LINK_DEFINITION (state, linkDefinition) {
     var elementIndex = state.linkDefinitions.indexOf(linkDefinition)
     if (elementIndex < 0) {
