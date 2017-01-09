@@ -8,12 +8,14 @@
       <h4>Link...</h4>
       <div v-for='link in links'>
         <h5>{{ link.keyword }}</h5>
-        <ul>
-          <li v-for='linkedDevice in possibleLinksFor(link)'>
-            <button class='btn btn-sm btn-primary' v-on:mouseover='mouseOver(linkedDevice)' v-on:mouseout='mouseOut(linkedDevice)'>{{ linkedDevice.name }}</button>
-          </li>
-        </ul>
+        <p v-for='linkedDevice in possibleLinksFor(link)'>
+          <button class='btn btn-sm' v-bind:class='affectsClass(link, linkedDevice)' v-on:mouseover='mouseOver(linkedDevice)' v-on:mouseout='mouseOut(linkedDevice)' v-on:click="toggleLink(link, linkedDevice)">
+            ({{ isLinkDefined(link, linkedDevice) ? 'remove' : 'add' }}) {{ linkedDevice.name }}
+          </button>
+        </p>
       </div>
+
+      <hr>
 
       <p>
         <button class="btn btn-danger" v-on:click='deleteDevice(selectedDevice)'>
@@ -29,7 +31,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { updateDevice, deleteDevice, setOpacityFilter, canvasRedraw } from '../store/actions'
+import { updateDevice, deleteDevice, setOpacityFilter, canvasRedraw, fetchLinkDefinitions } from '../store/actions'
 import TextInput from './TextInput'
 
 export default {
@@ -40,7 +42,8 @@ export default {
     ...mapGetters({
       selectedDevice: 'selectedDevice',
       domain: 'domain',
-      floorplan: 'floorplan'
+      floorplan: 'floorplan',
+      linkDefinitions: 'linkDefinitions'
     }),
     links: function () {
       var vm = this
@@ -63,6 +66,9 @@ export default {
   },
   mounted: function () {
     var vm = this
+
+    fetchLinkDefinitions(vm, vm.$store)
+
     setOpacityFilter(vm.$store, function (device) {
       if (device === vm.highlightedDevice) {
         return 1
@@ -111,6 +117,35 @@ export default {
         return pl
       }
       return []
+    },
+    toggleLink: function (link, device) {
+      console.log(link)
+      console.log(device)
+    },
+    getLinkDefinition: function (plink, device) {
+      var vm = this
+
+      var linkDefinition = vm.linkDefinitions.find((ld) => {
+        return ld.predicate_id === plink.id &&
+          ld.link_definition_params &&
+          ld.link_definition_params[0] &&
+          ld.link_definition_params[0].device_definition_id === vm.selectedDevice.id &&
+          ld.link_definition_params[1] &&
+          ld.link_definition_params[1].device_definition_id === device.id
+      })
+
+      return linkDefinition
+    },
+    isLinkDefined: function (plink, device) {
+      return this.getLinkDefinition(plink, device) != null
+    },
+    affectsClass: function (plink, device) {
+      if (this.isLinkDefined(plink, device)) {
+        return 'btn-danger'
+      }
+      else {
+        return 'btn-success'
+      }
     }
   }
 }

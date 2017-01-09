@@ -73,3 +73,22 @@ export const setOpacityFilter = function ({ commit }, filter) {
 export const canvasRedraw = function ({ commit }) {
   commit('CANVAS_REDRAW')
 }
+
+export const fetchLinkDefinitions = ({ $http, $resource }, {commit}) => {
+  return $http.get(API_BASE + '/floorplans').then((response) => {
+    if (response.body.length === 0) {
+      return Promise.reject('No floorplans')
+    }
+
+    var fpId = response.body[0].id
+
+    var linkDefinitionResource = $resource(API_BASE + '/floorplans/' + fpId + '/problems/_/link_definitions')
+
+    return linkDefinitionResource.get().then((response) => {
+      console.log(response)
+      var linkDefinitions = response.body
+      commit('SET_LINK_DEFINITIONS', linkDefinitions)
+      return linkDefinitions
+    })
+  })
+}

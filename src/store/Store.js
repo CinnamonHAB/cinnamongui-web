@@ -12,6 +12,7 @@ const state = {
   lastDevice: {},
   selectedDevice: null,
   floorplan: {},
+  linkDefinitions: [],
 
   opacityFilter: null,
 
@@ -23,6 +24,7 @@ const getters = {
   lastDevice: state => state.lastDevice,
   selectedDevice: state => state.selectedDevice,
   floorplan: state => state.floorplan,
+  linkDefinitions: state => state.linkDefinitions,
   domain: state => state.floorplan.domain,
   opacityFilter: state => state.opacityFilter,
 
@@ -70,6 +72,10 @@ const mutations = {
 
   CANVAS_REDRAW (state) {
     state.canvasRedraw = !state.canvasRedraw
+  },
+
+  SET_LINK_DEFINITIONS (state, linkDefinitions) {
+    state.linkDefinitions = linkDefinitions
   }
 }
 
