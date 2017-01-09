@@ -31,7 +31,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { updateDevice, deleteDevice, setOpacityFilter, canvasRedraw, fetchLinkDefinitions } from '../store/actions'
+import { updateDevice, deleteDevice, setOpacityFilter, canvasRedraw, fetchLinkDefinitions, deleteLinkDefinition } from '../store/actions'
 import TextInput from './TextInput'
 
 export default {
@@ -118,9 +118,14 @@ export default {
       }
       return []
     },
-    toggleLink: function (link, device) {
-      console.log(link)
-      console.log(device)
+    toggleLink: function (plink, device) {
+      var vm = this
+      var ld = vm.getLinkDefinition(plink, device)
+      if (ld != null) {
+        deleteLinkDefinition(vm, vm.$store, ld)
+      }
+      else {
+      }
     },
     getLinkDefinition: function (plink, device) {
       var vm = this

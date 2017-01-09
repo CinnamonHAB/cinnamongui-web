@@ -76,6 +76,16 @@ const mutations = {
 
   SET_LINK_DEFINITIONS (state, linkDefinitions) {
     state.linkDefinitions = linkDefinitions
+  },
+
+  REMOVE_LINK_DEFINITION (state, linkDefinition) {
+    var elementIndex = state.linkDefinitions.indexOf(linkDefinition)
+    if (elementIndex < 0) {
+      console.error('link not found in local cache')
+      return
+    }
+
+    state.linkDefinitions.splice(elementIndex, 1)
   }
 }
 

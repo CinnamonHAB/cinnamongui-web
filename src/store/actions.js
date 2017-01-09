@@ -92,3 +92,11 @@ export const fetchLinkDefinitions = ({ $http, $resource }, {commit}) => {
     })
   })
 }
+
+export const deleteLinkDefinition = ({ $resource }, { commit, getters }, linkDefinition) => {
+  var floorplan = getters.floorplan
+  var resource = $resource(API_BASE + '/floorplans/' + floorplan.id + '/problems/_/link_definitions{/id}')
+  return resource.remove({id: linkDefinition.id}).then(function (resp) {
+    commit('REMOVE_LINK_DEFINITION', linkDefinition)
+  })
+}
