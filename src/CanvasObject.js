@@ -42,7 +42,7 @@ var Switch = fabric.util.createClass(CinnamonBase, {
     options || (options = {})
 
     var img = fabric.util.createImage()
-    img.src = '/static/bulb.png'
+    img.src = '/static/switch.png'
 
     this.callSuper('initialize', img, options)
   }
