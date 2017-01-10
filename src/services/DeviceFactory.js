@@ -28,8 +28,7 @@ var DeviceFactory = {
         break
 
       case 'SWITCH':
-        var fo = window.$.extend({angle: 180}, foOptions)
-        Switch.build(cb, fo)
+        Switch.build(cb, foOptions)
         break
 
       default:
