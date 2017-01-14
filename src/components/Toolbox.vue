@@ -3,24 +3,30 @@
     <h3>Toolbox</h3>
     <p>Domain name: {{ domain.name }}</p>
     <ul>
-      <li v-for='device in devices'>
-        <button v-on:click='addDevice(device)'>Add a {{ device.keyword }}</button>
-      </li>
-      <li>
-        <button v-on:click='deleteAllDevices'>Delete all devices</button>
-      </li>
+      <p v-for='device in devices'>
+        <button v-on:click='addDevice(device)' class='btn btn-primary'>Add a {{ device.keyword }}</button>
+      </p>
+      <hr>
+      <p>
+        <button v-on:click='deleteAllDevices' class='btn btn-danger'>Delete all devices</button>
+      </p>
+      <hr>
+      <p>
+        <button v-on:click='openhabApply' :disabled='loading' class='btn btn-success'>{{ applyMsg }}</button>
+      </p>
     </ul>
   </div>
 </template>
 
 <script>
-import { fetchFloorplan, addDevice, deleteAllDevices } from '../store/actions'
+import { fetchFloorplan, addDevice, deleteAllDevices, openhabApply } from '../store/actions'
 import { DeviceFactory } from '../services/DeviceFactory'
 
 export default {
   data: function () {
     return {
-      domain: {}
+      domain: {},
+      loading: false
     }
   },
   computed: {
@@ -33,6 +39,9 @@ export default {
       return vm.domain.predicates.filter((pred) => {
         return pred.predicate_type === 'device'
       })
+    },
+    applyMsg: function () {
+      return this.loading ? 'Applying...' : 'Apply to OpenHAB'
     }
   },
   methods: {
@@ -48,6 +57,16 @@ export default {
     deleteAllDevices: function () {
       var vm = this
       deleteAllDevices(vm, vm.$store)
+    },
+    openhabApply: function () {
+      var vm = this
+      vm.loading = true
+      openhabApply(this, this.$store).then((resp) => {
+        vm.loading = false
+        console.log(resp)
+      }, function () {
+        vm.loading = false
+      })
     }
   },
   mounted: function () {

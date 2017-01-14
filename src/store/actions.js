@@ -1,4 +1,5 @@
-let API_BASE = 'http://localhost:3000'
+// let API_BASE = 'http://localhost:3000'
+let API_BASE = 'http://cinnamonhab.makkrnic.com:3000'
 
 export const fetchFloorplan = ({$http}, {commit}) => {
   return $http.get(API_BASE + '/floorplans').then((response) => {
@@ -108,4 +109,11 @@ export const deleteLinkDefinition = ({ $resource }, { commit, getters }, linkDef
   return resource.remove({id: linkDefinition.id}).then(function (resp) {
     commit('REMOVE_LINK_DEFINITION', linkDefinition)
   })
+}
+
+export const openhabApply = ({ $resource }, { getters }) => {
+  var floorplan = getters.floorplan
+  var resource = $resource(API_BASE + '/floorplans/' + floorplan.id + '/apply')
+
+  return resource.save()
 }

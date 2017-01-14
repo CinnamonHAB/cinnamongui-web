@@ -2,7 +2,7 @@
   <nav class='navbar navbar-default ch-navbar'>
     <div class='container-fluid'>
       <div class="navbar-header">
-        <a class="navbar-brand" href='#'>Cwebe</a>
+        <a class="navbar-brand" href='#'>LMA 9001</a>
       </div>
     </div>
   </nav>
